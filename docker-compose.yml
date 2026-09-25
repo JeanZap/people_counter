@@ -1,0 +1,62 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: people_counter
+      POSTGRES_USER: people_counter
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-people_counter_local}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U people_counter -d people_counter"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    environment:
+      ConnectionStrings__Database: Host=postgres;Port=5432;Database=people_counter;Username=people_counter;Password=${POSTGRES_PASSWORD:-people_counter_local}
+      Storage__Root: /data/events
+    volumes:
+      - event_storage:/data/events
+    ports:
+      - "8080:8080"
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "--silent", "http://localhost:8080/api/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  worker:
+    build:
+      context: ./model
+      dockerfile: Dockerfile
+    environment:
+      API_URL: http://api:8080
+      RTSP_URL: ${RTSP_URL:-}
+      EVENT_ROOT: /data/events
+    volumes:
+      - event_storage:/data/events
+    depends_on:
+      api:
+        condition: service_healthy
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./front
+      dockerfile: Dockerfile
+    ports:
+      - "3000:80"
+    depends_on:
+      - api
+
+volumes:
+  postgres_data:
+  event_storage:

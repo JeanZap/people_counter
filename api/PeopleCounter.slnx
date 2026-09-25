@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="src/PeopleCounter.Domain/PeopleCounter.Domain.csproj" />
+  <Project Path="src/PeopleCounter.Application/PeopleCounter.Application.csproj" />
+  <Project Path="src/PeopleCounter.Infrastructure/PeopleCounter.Infrastructure.csproj" />
+  <Project Path="src/PeopleCounter.WebApi/PeopleCounter.WebApi.csproj" />
+</Solution>
