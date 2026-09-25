@@ -1,6 +1,6 @@
 {
-  "connectionString": "rtsp://admin:12345678ab@192.168.0.18:554/onvif1",
-  "camera": "quintal",
+  "connectionString": "rtsp://...",
+  "camera": "camera",
   "model_path": "yolo26n.pt",
   "threshold": 1,
   "duration_seconds": 1,
