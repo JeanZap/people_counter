@@ -1,0 +1,19 @@
+{
+  "connectionString": "rtsp://admin:12345678ab@192.168.0.18:554/onvif1",
+  "camera": "quintal",
+  "model_path": "yolo26n.pt",
+  "threshold": 1,
+  "duration_seconds": 1,
+  "reset_duration_seconds": 4,
+  "frame_buffer_max_length": 30,
+  "watch_start": 23,
+  "frame_height": 640,
+  "frame_width": 1024,
+  "watch_end": 6,
+  "area": [
+    [327, 289],
+    [350, 499],
+    [578, 496],
+    [530, 292]
+  ]
+}
